@@ -86,9 +86,30 @@ Pipe.prototype.fill = function(startConnectionIndex){
 	if(typeof startConnectionIndex != 'undefined')
 	{
 		if(this._connectionStatus[startConnectionIndex] == 1){
-			
+			this._htmlElement.addClass("full");
+			for(var i =0 ;i < this._connectionStatus.length ;i ++)
+			{
+				var from = 0;
+				if(i == 0){
+					from = 2
+				}else if(i == 1){
+					from = 3;
+				}else if(i == 2){
+					from = 0;
+				}else if(i == 3){
+					from = 1;
+				}
+				
+				//this part is broken :(
+				if(this._connectionStatus[i] == 1){
+					if(this._connections[i] != null && typeof this._connections[i] != 'undefined'){
+						this._connections[i].fill(from);
+					}
+				}
+			}
 		}else{
 			//lose :(
+				console.log("DEAD");
 		}
 	}
 }
@@ -125,6 +146,7 @@ Pipe.prototype.clicked = function(){
 	var prevCol = [];
 	var numCols = 8;
 	var numRows = 3;
+	var firstToFill;
 	var pipeOptions = [
 		[0,1,0,1],
 		[0,1,1,0],
@@ -162,8 +184,15 @@ Pipe.prototype.clicked = function(){
 					prevCol[j].setConnection(1, bottomNode);
 				}
 				prevCol[j] = bottomNode;
+				
+				if(i == 0 && j == 2){
+					
+					firstToFill = bottomNode;
+				}
 			}	
 			
 			prevTopNode = topNode;
 		}
+		
+		setTimeout(function(){firstToFill.fill(3);},3000);
 	});
