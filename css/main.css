@@ -298,3 +298,21 @@ textarea {
         page-break-after: avoid;
     }
 }
+
+/**************************************************************************************************************
+ * Pipe styles below this line
+ * ***********************************************************************************************************/
+.plumbing ul{
+	
+	float:left;
+	list-style:none;
+	padding:0px;
+}
+
+.plumbing ul li{
+	width:71px;
+	height:71px;
+	border:1px solid #ffffff;
+	background:#000000;
+	
+}

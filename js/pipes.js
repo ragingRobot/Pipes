@@ -39,6 +39,17 @@ Node.prototype.setConnectionStatus = function (connectionIndex, connectionStatus
 }
 
 
+Node.prototype.setConnectionStatusList = function (connectionStatus)
+{
+	/***********************************************************************
+	 * This lets you set or change the ability of this node to connect to 
+	 * the ones around it.
+	 ***********************************************************************/
+	
+		this._connectionStatus = connectionStatus;
+	
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SETUP Pipe OBJECTS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,15 +92,14 @@ Pipe.prototype.fill = function(startConnectionIndex){
 		}
 	}
 }
-Pipe.prototype.setHTMLElement= function(colClass, rowClass){
+Pipe.prototype.setHTMLElement= function(col, row){
 	/***********************************************************************
 	 * 
 	 ***********************************************************************/
-	var pipe = this;
-	this._htmlElement = $("." + colClass + " ." + rowClass);
+	var thispipe = this;
+	this._htmlElement = $("." + col + " ." + row);
 	this._htmlElement.click(function(e){
-		pipe.clicked();
-		
+		thispipe.clicked();
 	});
 }
 Pipe.prototype.clicked = function(){
@@ -97,6 +107,8 @@ Pipe.prototype.clicked = function(){
 	 * 
 	 ***********************************************************************/
 	this.rotate();
+	var newclass= this._connectionStatus.toString().replace(/,/g,"");
+	this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
 }
 
 
@@ -111,13 +123,21 @@ Pipe.prototype.clicked = function(){
  ***************************************************************************************/
 	var prevTopNode;
 	var prevCol = [];
-	var numCols = 6;
+	var numCols = 8;
 	var numRows = 3;
+	var pipeOptions = [
+		[0,1,0,1],
+		[0,1,1,0],
+		[1,1,1,0]
+	];
 	$(document).ready(function(){
 		for(var i=0; i< numCols; i++)
 		{
+			var random = Math.floor(Math.random()*pipeOptions.length);
 			var topNode = new Pipe();
-			$(".plumbing").append("<ul class=\"col-"+ i +"\"><li class=\"row-"+ 0 +"\"></li></ul>");
+			topNode.setConnectionStatusList(pipeOptions[random]);
+			var pipeclass = "pipe-" + pipeOptions[random].toString().replace(/,/g,"");
+			$(".plumbing").append("<ul class=\"col-"+ i +"\"><li class=\"row-"+ 0 +"\"><span class=\""+ pipeclass +"\"></span></li></ul>");
 			topNode.setHTMLElement("col-"+ i, "row-"+ 0 );
 			if(i > 0){
 				topNode.setConnection(3, prevTopNode);
@@ -126,9 +146,12 @@ Pipe.prototype.clicked = function(){
 			
 			var nodeAbove = topNode;
 			for(var j = 0 ; j < numRows; j++){
+				var random = Math.floor(Math.random()*pipeOptions.length);
 				var bottomNode = new Pipe();
-				$(".plumbing .col-" + i ).append("<li class=\"row-"+ (j + 1) +"\"></li>");
-				topNode.setHTMLElement("col-"+ i, "row-" + (j + 1) );
+				bottomNode.setConnectionStatusList(pipeOptions[random]);
+				var pipeclass = "pipe-" + pipeOptions[random].toString().replace(/,/g,"");
+				$(".plumbing .col-" + i ).append("<li class=\"row-"+ (j + 1) +"\"><span class=\""+ pipeclass +"\"></span></li>");
+				bottomNode.setHTMLElement("col-"+ i, "row-" + (j + 1) );
 				
 				bottomNode.setConnection(0, nodeAbove);
 				nodeAbove.setConnection(2, bottomNode );
