@@ -81,3 +81,66 @@ Pipe.prototype.fill = function(startConnectionIndex){
 		}
 	}
 }
+Pipe.prototype.setHTMLElement= function(colClass, rowClass){
+	/***********************************************************************
+	 * 
+	 ***********************************************************************/
+	var pipe = this;
+	this._htmlElement = $("." + colClass + " ." + rowClass);
+	this._htmlElement.click(function(e){
+		pipe.clicked();
+		
+	});
+}
+Pipe.prototype.clicked = function(){
+	/***********************************************************************
+	 * 
+	 ***********************************************************************/
+	this.rotate();
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SETUP GAME
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/***************************************************************************************
+ * This populates the game board based on the number of rows and cols specified.
+ * I still need to add in the different pipe types and the ability to add blank spaces
+ ***************************************************************************************/
+	var prevTopNode;
+	var prevCol = [];
+	var numCols = 6;
+	var numRows = 3;
+	$(document).ready(function(){
+		for(var i=0; i< numCols; i++)
+		{
+			var topNode = new Pipe();
+			$(".plumbing").append("<ul class=\"col-"+ i +"\"><li class=\"row-"+ 0 +"\"></li></ul>");
+			topNode.setHTMLElement("col-"+ i, "row-"+ 0 );
+			if(i > 0){
+				topNode.setConnection(3, prevTopNode);
+				prevTopNode.setConnection(1, topNode);
+			}
+			
+			var nodeAbove = topNode;
+			for(var j = 0 ; j < numRows; j++){
+				var bottomNode = new Pipe();
+				$(".plumbing .col-" + i ).append("<li class=\"row-"+ (j + 1) +"\"></li>");
+				topNode.setHTMLElement("col-"+ i, "row-" + (j + 1) );
+				
+				bottomNode.setConnection(0, nodeAbove);
+				nodeAbove.setConnection(2, bottomNode );
+				nodeAbove = bottomNode;
+				if(i > 0){
+					
+					bottomNode.setConnection(3, prevCol[j]);
+					prevCol[j].setConnection(1, bottomNode);
+				}
+				prevCol[j] = bottomNode;
+			}	
+			
+			prevTopNode = topNode;
+		}
+	});
