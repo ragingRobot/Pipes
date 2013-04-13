@@ -13,6 +13,7 @@ var Node = function(connections, connectionStatus){
 	var defaults = {connections:[null,null,null,null], connectionStatus:[0,0,0,0]};
 	this._connections = connections || defaults.connections;
 	this._connectionStatus  = connectionStatus || defaults.connectionStatus;
+	
 }
 
 Node.prototype.setConnection = function (connectionIndex, connectionNode)
@@ -45,7 +46,7 @@ Node.prototype.setConnectionStatusList = function (connectionStatus)
 	 * This lets you set or change the ability of this node to connect to 
 	 * the ones around it.
 	 ***********************************************************************/
-	
+		this._connectionStatus = null;
 		this._connectionStatus = connectionStatus;
 	
 }
@@ -74,6 +75,10 @@ Pipe.prototype.rotate = function (direction){
 		this._connectionStatus.push(this._connectionStatus.shift());
 	}
 	
+	var newclass= this._connectionStatus.toString().replace(/,/g,"");
+	this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
+	
+	
 	
 }
 
@@ -85,51 +90,58 @@ Pipe.prototype.fill = function(startConnectionIndex){
 	 ***********************************************************************/
 	if(typeof startConnectionIndex != 'undefined')
 	{
+			var newclass= this._connectionStatus.toString().replace(/,/g,"");
+			this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
+	
+		console.log(this);
 		if(this._connectionStatus[startConnectionIndex] == 1){
-			this._htmlElement.addClass("full");
-			for(var i =0 ;i < this._connectionStatus.length ;i ++)
-			{
-				var from = 0;
-				if(i == 0){
-					from = 2
-				}else if(i == 1){
-					from = 3;
-				}else if(i == 2){
-					from = 0;
-				}else if(i == 3){
-					from = 1;
-				}
-				
-				//this part is broken :(
-				if(this._connectionStatus[i] == 1){
-					if(this._connections[i] != null && typeof this._connections[i] != 'undefined'){
-						this._connections[i].fill(from);
-					}
-				}
-			}
+			var thispipe = this;
+			thispipe._htmlElement.find(".water").animate({width:"71px"},2000, function(){
+						thispipe._htmlElement.addClass("full");
+						for(var i =0 ; i < thispipe._connectionStatus.length ;i ++)
+						{
+							var from = 0;
+							if(i == 0){
+								from = 2;
+							}else if(i == 1){
+								from = 3;
+							}else if(i == 2){
+								from = 0;
+							}else if(i == 3){
+								from = 1;
+							}
+							
+						
+							if(thispipe._connectionStatus[i] == 1 && i != startConnectionIndex){
+								if(thispipe._connections[i] != null && typeof thispipe._connections[i] != 'undefined'){
+									thispipe._connections[i].fill(from);
+								}
+							}
+						}
+			});
 		}else{
 			//lose :(
 				console.log("DEAD");
 		}
 	}
 }
-Pipe.prototype.setHTMLElement= function(col, row){
+Pipe.prototype.setHTMLElement= function(element){
 	/***********************************************************************
 	 * 
 	 ***********************************************************************/
 	var thispipe = this;
-	this._htmlElement = $("." + col + " ." + row);
+	this._htmlElement = element;
 	this._htmlElement.click(function(e){
 		thispipe.clicked();
 	});
 }
+
 Pipe.prototype.clicked = function(){
 	/***********************************************************************
 	 * 
 	 ***********************************************************************/
 	this.rotate();
-	var newclass= this._connectionStatus.toString().replace(/,/g,"");
-	this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
+	
 }
 
 
@@ -138,61 +150,90 @@ Pipe.prototype.clicked = function(){
 // SETUP GAME
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/***************************************************************************************
- * This populates the game board based on the number of rows and cols specified.
- * I still need to add in the different pipe types and the ability to add blank spaces
- ***************************************************************************************/
-	var prevTopNode;
-	var prevCol = [];
+var PipeGame = (function(){
+
+	
 	var numCols = 8;
-	var numRows = 3;
+	var numRows = 4;
 	var firstToFill;
-	var pipeOptions = [
-		[0,1,0,1],
-		[0,1,1,0],
-		[1,1,1,0]
-	];
-	$(document).ready(function(){
+
+	
+	function _setGameBoard(){
+	/***************************************************************************************
+	 * This populates the game board based on the number of rows and cols specified.
+	 * I still need to add in the different pipe types and the ability to add blank spaces
+	 ***************************************************************************************/		
+		var pipeOptions = [
+			[0,1,0,1],
+			[0,1,1,0],
+			[0,1,1,0]
+		];
+		
+		
+		var prevTopNode;
+		var prevCol = [];
+		var topNode;
+		var random;
+		var pipeclasst;
+		var pipeclass;
+		var nodeAbove;
+		var bottomNode;
+		
 		for(var i=0; i< numCols; i++)
 		{
-			var random = Math.floor(Math.random()*pipeOptions.length);
-			var topNode = new Pipe();
+			random = Math.floor(Math.random()*pipeOptions.length);
+			topNode = new Pipe();
 			topNode.setConnectionStatusList(pipeOptions[random]);
-			var pipeclass = "pipe-" + pipeOptions[random].toString().replace(/,/g,"");
-			$(".plumbing").append("<ul class=\"col-"+ i +"\"><li class=\"row-"+ 0 +"\"><span class=\""+ pipeclass +"\"></span></li></ul>");
-			topNode.setHTMLElement("col-"+ i, "row-"+ 0 );
-			if(i > 0){
-				topNode.setConnection(3, prevTopNode);
-				prevTopNode.setConnection(1, topNode);
-			}
+			pipeclasst = "pipe-" + topNode._connectionStatus.toString().replace(/,/g,"");
+			$(".plumbing").append("<ul class=\"col-"+ i +"\"></ul>");
 			
-			var nodeAbove = topNode;
 			for(var j = 0 ; j < numRows; j++){
-				var random = Math.floor(Math.random()*pipeOptions.length);
-				var bottomNode = new Pipe();
+				random = Math.floor(Math.random()*pipeOptions.length);
+				bottomNode = new Pipe();
 				bottomNode.setConnectionStatusList(pipeOptions[random]);
-				var pipeclass = "pipe-" + pipeOptions[random].toString().replace(/,/g,"");
-				$(".plumbing .col-" + i ).append("<li class=\"row-"+ (j + 1) +"\"><span class=\""+ pipeclass +"\"></span></li>");
-				bottomNode.setHTMLElement("col-"+ i, "row-" + (j + 1) );
+				if(j != null){
+					bottomNode.setConnectionStatusList([1,0,0,1]);
+				}
 				
-				bottomNode.setConnection(0, nodeAbove);
-				nodeAbove.setConnection(2, bottomNode );
-				nodeAbove = bottomNode;
+				pipeclass = "pipe-" + bottomNode._connectionStatus.toString().replace(/,/g,"");
+				bottomNode.setHTMLElement($(".plumbing .col-" + i ).append("<li class=\"row-"+ j  +"\"><span class=\""+ pipeclass +"\"></span><div class=\"water\"></div></li>").find("li").last());
+				
+				if(nodeAbove != null && typeof nodeAbove != 'undefined'){
+					bottomNode.setConnection(0, nodeAbove);
+					nodeAbove.setConnection(2, bottomNode );
+				}
+				
 				if(i > 0){
 					
 					bottomNode.setConnection(3, prevCol[j]);
 					prevCol[j].setConnection(1, bottomNode);
 				}
-				prevCol[j] = bottomNode;
 				
-				if(i == 0 && j == 2){
+				
+				if(i == 0 && j == 3){
 					
 					firstToFill = bottomNode;
 				}
+				
+				prevCol[j] = bottomNode;
+				nodeAbove = bottomNode;
+			
 			}	
 			
 			prevTopNode = topNode;
 		}
 		
 		setTimeout(function(){firstToFill.fill(3);},3000);
-	});
+	
+	}
+	
+	
+	return{
+		setGameBoard:_setGameBoard
+	}
+	
+})();
+
+$(document).ready(function(){
+	PipeGame.setGameBoard();
+});

@@ -314,5 +314,45 @@ textarea {
 	height:71px;
 	border:1px solid #ffffff;
 	background:#000000;
+	overflow: hidden;
 	
+}
+
+.water
+{
+	width:0px;
+	height:100%;
+	background:#0000ff;	
+	margin-top: -71px;
+	z-index: 1;
+	position: relative;
+	float: left;
+}
+
+.plumbing ul li span{
+	width:71px;
+	height:71px;
+	display:block;
+	z-index: 2;
+	position: relative;
+}
+.pipe-0101 {
+	background:URL(".././img/0101.png");
+}
+.pipe-1010 {
+	background:URL(".././img/1010.png");
+}
+
+
+.pipe-1100 {
+	background:URL(".././img/1100.png");
+}
+.pipe-0110 {
+	background:URL(".././img/0110.png");
+}
+.pipe-0011 {
+	background:URL(".././img/0011.png");
+}
+.pipe-1001 {
+	background:URL(".././img/1001.png");
 }
