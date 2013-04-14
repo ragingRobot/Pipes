@@ -339,7 +339,18 @@ body, html{
 	position: relative;
 	float: left;
 }
-
+.water.right{
+	float:right;
+}
+.water.verticle
+{
+	width:100%;
+	height:0;
+}
+.water.verticle.bottom{
+	margin-top:0px;
+	height:100%;
+}
 .plumbing ul li span{
 	width:71px;
 	height:71px;

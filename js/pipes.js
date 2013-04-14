@@ -100,12 +100,28 @@ Pipe.prototype.fill = function(startConnectionIndex){
 	{
 			var newclass= this._connectionStatus.toString().replace(/,/g,"");
 			this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
-	
+		if(startConnectionIndex == 1){
+			this._htmlElement.find(".water").addClass("right");
+		}else if(startConnectionIndex == 0){
+			this._htmlElement.find(".water").addClass("verticle");
+		}else if(startConnectionIndex == 2){
+			this._htmlElement.find(".water").addClass("verticle").addClass("bottom");
+		}
+		
 		console.log(this);
 		this.full = true;
 		if(this._connectionStatus[startConnectionIndex] == 1){
 			var thispipe = this;
-			thispipe._htmlElement.find(".water").animate({width:"71px"},2000, function(){
+			
+			var animationOptions ={width:"71px"};
+			if(startConnectionIndex == 0){
+				animationOptions ={'height':"71px"};
+			} else if(startConnectionIndex == 2){
+				animationOptions ={'margin-top':"-71px"};
+				
+			}
+			
+			thispipe._htmlElement.find(".water").animate(animationOptions,2000, function(){
 						thispipe._htmlElement.addClass("full");
 						for(var i =0 ; i < thispipe._connectionStatus.length ;i ++)
 						{
@@ -166,10 +182,10 @@ Pipe.prototype.setConnectionStatusList = function (connectionStatus)
 	 ***********************************************************************/
 	var pipeOptions = [
 			[0,1,0,1],
+			[0,0,1,1],
 			[0,1,1,0],
-			[0,1,1,0],
-			[0,1,1,0],
-			[0,1,1,0],
+			[1,1,0,0],
+			[1,0,0,1],
 			[0,1,1,0],
 			[0,1,1,0],
 			[0,1,1,0],
