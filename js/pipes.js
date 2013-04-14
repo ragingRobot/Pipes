@@ -7,7 +7,8 @@ return check; }
 // SETUP gameDataManager 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var gameOptionsManager = {
-	fillSpeed: 1500
+	fillSpeed: 1500,
+	outOfPlayAreaKills: false
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +150,7 @@ Pipe.prototype.fill = function(startConnectionIndex){
 							if(thispipe._connectionStatus[i] == 1 && i != startConnectionIndex){
 								if(thispipe._connections[i] != null && typeof thispipe._connections[i] != 'undefined'){
 									thispipe._connections[i].fill(from);
-								}else{
+								}else if(gameOptionsManager.outOfPlayAreaKills){
 									//lose :(
 									gameOptionsManager.fillSpeed = 100;
 									console.log("DEAD");
