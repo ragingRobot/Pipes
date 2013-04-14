@@ -298,21 +298,32 @@ textarea {
         page-break-after: avoid;
     }
 }
+body, html{
+	text-align:center;
+	background:#000000 URL(".././img/0101.png") repeat-x;
+}
 
 /**************************************************************************************************************
  * Pipe styles below this line
  * ***********************************************************************************************************/
+.plumbing{
+	margin:auto;
+	width:300px;
+	padding:0px;
+}
 .plumbing ul{
 	
 	float:left;
 	list-style:none;
 	padding:0px;
+	margin:0px;
 }
 
 .plumbing ul li{
 	width:71px;
 	height:71px;
-	border:1px solid #ffffff;
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
 	background:#000000;
 	overflow: hidden;
 	
@@ -355,4 +366,19 @@ textarea {
 }
 .pipe-1001 {
 	background:URL(".././img/1001.png");
+}
+
+
+.pipe-1101 {
+	background:URL(".././img/1101.png");
+}
+
+.pipe-1110 {
+	background:URL(".././img/1110.png");
+}
+.pipe-1011 {
+	background:URL(".././img/1011.png");
+}
+.pipe-0111 {
+	background:URL(".././img/0111.png");
 }
