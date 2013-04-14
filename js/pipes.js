@@ -55,6 +55,8 @@ Node.prototype.setConnectionStatusList = function (connectionStatus)
 // SETUP Pipe OBJECTS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Pipe = Node.prototype.constructor;
+
+Pipe.prototype.full = false;	
 Pipe.prototype = new Node();
 
 Pipe.prototype.rotate = function (direction){
@@ -63,6 +65,7 @@ Pipe.prototype.rotate = function (direction){
 	 * either a 1 or 0 for the direction. 0 for clockwise, 1 for counter clockwise
 	 * It defaults to clockwise.
 	 ***********************************************************************/
+	if(! this.full){
 	if(direction != 0 && direction != 1 || typeof direction == 'undefined')
 	{
 		direction = 0;
@@ -77,6 +80,7 @@ Pipe.prototype.rotate = function (direction){
 	
 	var newclass= this._connectionStatus.toString().replace(/,/g,"");
 	this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
+	}
 	
 	
 	
@@ -94,6 +98,7 @@ Pipe.prototype.fill = function(startConnectionIndex){
 			this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
 	
 		console.log(this);
+		this.full = true;
 		if(this._connectionStatus[startConnectionIndex] == 1){
 			var thispipe = this;
 			thispipe._htmlElement.find(".water").animate({width:"71px"},2000, function(){
@@ -144,6 +149,29 @@ Pipe.prototype.clicked = function(){
 	
 }
 
+Pipe.prototype.setConnectionStatusList = function (connectionStatus)
+{
+	/***********************************************************************
+	 * This lets you set or change the ability of this node to connect to 
+	 * the ones around it.
+	 ***********************************************************************/
+	var pipeOptions = [
+			[0,1,0,1],
+			[0,1,1,0],
+			[0,1,1,0]
+		];
+		
+	if(connectionStatus != null && typeof connectionStatus != 'undefined'){
+		this._connectionStatus = null;
+		this._connectionStatus = connectionStatus;
+	}else{
+		var random = Math.floor(Math.random()*pipeOptions.length);	
+		this._connectionStatus = null;
+		this._connectionStatus = pipeOptions[random];
+	}
+	
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,9 +181,11 @@ Pipe.prototype.clicked = function(){
 var PipeGame = (function(){
 
 	
-	var numCols = 8;
-	var numRows = 4;
-	var firstToFill;
+	var _numCols = 15;
+	var _numRows = 15;
+	var _firstx = 0;
+	var _firsty = 3;
+	var _firstToFill;
 
 	
 	function _setGameBoard(){
@@ -163,13 +193,6 @@ var PipeGame = (function(){
 	 * This populates the game board based on the number of rows and cols specified.
 	 * I still need to add in the different pipe types and the ability to add blank spaces
 	 ***************************************************************************************/		
-		var pipeOptions = [
-			[0,1,0,1],
-			[0,1,1,0],
-			[0,1,1,0]
-		];
-		
-		
 		var prevTopNode;
 		var prevCol = [];
 		var topNode;
@@ -179,20 +202,17 @@ var PipeGame = (function(){
 		var nodeAbove;
 		var bottomNode;
 		
-		for(var i=0; i< numCols; i++)
+		for(var i=0; i< _numCols; i++)
 		{
-			random = Math.floor(Math.random()*pipeOptions.length);
-			topNode = new Pipe();
-			topNode.setConnectionStatusList(pipeOptions[random]);
-			pipeclasst = "pipe-" + topNode._connectionStatus.toString().replace(/,/g,"");
-			$(".plumbing").append("<ul class=\"col-"+ i +"\"></ul>");
 			
-			for(var j = 0 ; j < numRows; j++){
-				random = Math.floor(Math.random()*pipeOptions.length);
+			$(".plumbing").append("<ul class=\"col-"+ i +"\"></ul>");
+			nodeAbove = null;
+			for(var j = 0 ; j < _numRows; j++){
+			
 				bottomNode = new Pipe();
-				bottomNode.setConnectionStatusList(pipeOptions[random]);
+				bottomNode.setConnectionStatusList();
 				if(j != null){
-					bottomNode.setConnectionStatusList([1,0,0,1]);
+				//	bottomNode.setConnectionStatusList([1,0,0,1]);
 				}
 				
 				pipeclass = "pipe-" + bottomNode._connectionStatus.toString().replace(/,/g,"");
@@ -210,9 +230,9 @@ var PipeGame = (function(){
 				}
 				
 				
-				if(i == 0 && j == 3){
+				if(i == _firstx && j == _firsty){
 					
-					firstToFill = bottomNode;
+					_firstToFill = bottomNode;
 				}
 				
 				prevCol[j] = bottomNode;
@@ -223,7 +243,7 @@ var PipeGame = (function(){
 			prevTopNode = topNode;
 		}
 		
-		setTimeout(function(){firstToFill.fill(3);},3000);
+		setTimeout(function(){_firstToFill.fill(3);},3000);
 	
 	}
 	
