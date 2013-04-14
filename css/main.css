@@ -308,8 +308,7 @@ body, html{
  * ***********************************************************************************************************/
 .plumbing{
 	margin:auto;
-	width: 288px;
-	height: 433px;
+
 	padding:0px;
 }
 .speedUp {
@@ -318,6 +317,8 @@ body, html{
 	background: #ffffff;
 	margin: auto;
 	padding: 0px;
+	float:left;
+	clear:left;
 }
 .plumbing ul{
 	

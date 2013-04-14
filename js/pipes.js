@@ -255,7 +255,7 @@ var PipeGame = (function(){
 	_firsty = options.StartY;	
 	}
 
-	function _setGameBoard(){
+	function _setGameBoard(level){
 	/***************************************************************************************
 	 * This populates the game board based on the number of rows and cols specified.
 	 * I still need to add in the different pipe types and the ability to add blank spaces
@@ -268,6 +268,12 @@ var PipeGame = (function(){
 		var pipeclass;
 		var nodeAbove;
 		var bottomNode;
+		
+		if(typeof level != 'undefined'){
+			
+			_numCols = level.length;
+			_numRows = level[0].length;
+		}
 
 		for(var i=0; i< _numCols; i++)
 		{
@@ -277,7 +283,13 @@ var PipeGame = (function(){
 			for(var j = 0 ; j < _numRows; j++){
 			
 				bottomNode = new Pipe();
-				bottomNode.setConnectionStatusList();
+				
+				if(typeof level != 'undefined'){
+					bottomNode.setConnectionStatusList(level[i][j]);
+				}else{
+					bottomNode.setConnectionStatusList();
+				}
+			
 				if(j != null){
 				//	bottomNode.setConnectionStatusList([1,0,0,1]);
 				}
@@ -336,8 +348,18 @@ $(document).ready(function(){
 		startX:0,
 		StartY:0	
 	});
+	//215-584-1675
 	
-	PipeGame.setGameBoard();
+	var board =[[[1,1,1,0],[1,1,1,0],[1,0,1,0],[1,0,1,0]],
+				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
+				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
+				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
+				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
+				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
+				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
+				[[1,0,1,0],[1,0,1,0],[1,0,0,1],[1,0,0,1]]];
+	
+	PipeGame.setGameBoard(board);
 	
 	$(".speedUp").click(function(){
 			gameOptionsManager.fillSpeed = 100;
