@@ -8,7 +8,10 @@ return check; }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var gameOptionsManager = {
 	fillSpeed: 1500,
-	outOfPlayAreaKills: false
+	outOfPlayAreaKills: false,
+	additiveMode: false,
+	godMode: false,
+	selectedPipeValue: [1,1,1,0]//null
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +120,7 @@ Pipe.prototype.fill = function(startConnectionIndex){
 			this._htmlElement.find(".water").addClass("verticle").addClass("bottom");
 		}
 		
-		console.log(this);
+		
 		
 		if(this._connectionStatus[startConnectionIndex] == 1){
 			this.full = true;
@@ -185,7 +188,13 @@ Pipe.prototype.clicked = function(){
 	/***********************************************************************
 	 * 
 	 ***********************************************************************/
-	this.rotate();
+	if(gameOptionsManager.additiveMode || gameOptionsManager.godMode){
+		if(gameOptionsManager.selectedPipeValue != null && typeof gameOptionsManager.selectedPipeValue != 'undefined'){
+			this.setConnectionStatusList(gameOptionsManager.selectedPipeValue);
+		}
+	}else{
+		this.rotate();
+	}
 	
 }
 
@@ -218,11 +227,16 @@ Pipe.prototype.setConnectionStatusList = function (connectionStatus)
 		this._connectionStatus = pipeOptions[random];
 	}
 	
+	if(this._htmlElement != null && typeof this._htmlElement != 'undefined'){
+		var newclass= this._connectionStatus.toString().replace(/,/g,"");
+		this._htmlElement.find("span").removeClass().addClass("pipe-"+newclass);
+	}
+	
 }
 
 var WinPipe = function(){};
-WinPipe.prototype = new Pipe();
-WinPipe.prototype.fill = function(connectionIndex){
+	WinPipe.prototype = new Pipe();
+	WinPipe.prototype.fill = function(connectionIndex){
 	console.log("WIN");
 }
 
@@ -244,22 +258,29 @@ var PipeGame = (function(){
 	var _score = 0;
 	var _numberOfPipesFilled = 0;
 	var _fillSpeed = 3000;
-
+	var _startTimer;
+	var _autoStart = null;
+	
 	function _configure(options){
-	/***************************************************************************************
-	 * This sets all of the options
-	 ***************************************************************************************/
-	_numCols = options.cols;
-	_numRows = options.rows;
-	_firstx = options.startX;
-	_firsty = options.StartY;	
+		/***************************************************************************************
+		 * This sets all of the options
+		 ***************************************************************************************/
+		_numCols = options.cols;
+		_numRows = options.rows;
+		_firstx = options.startX;
+		_firsty = options.StartY;
+		_lastx = options.lastX;
+		_lasty = options.lastY;
+		_autoStart = options.autoStart || null;	
+		gameOptionsManager.godMode = options.godMode || false;
+		gameOptionsManager.additiveMode = options.additiveMode || false;
 	}
 
 	function _setGameBoard(level){
-	/***************************************************************************************
-	 * This populates the game board based on the number of rows and cols specified.
-	 * I still need to add in the different pipe types and the ability to add blank spaces
-	 ***************************************************************************************/		
+		/***************************************************************************************
+		 * This populates the game board based on the number of rows and cols specified.
+		 * I still need to add in the different pipe types and the ability to add blank spaces
+		 ***************************************************************************************/		
 		var prevTopNode;
 		var prevCol = [];
 		var topNode;
@@ -288,10 +309,6 @@ var PipeGame = (function(){
 					bottomNode.setConnectionStatusList(level[i][j]);
 				}else{
 					bottomNode.setConnectionStatusList();
-				}
-			
-				if(j != null){
-				//	bottomNode.setConnectionStatusList([1,0,0,1]);
 				}
 				
 				pipeclass = "pipe-" + bottomNode._connectionStatus.toString().replace(/,/g,"");
@@ -327,40 +344,69 @@ var PipeGame = (function(){
 			prevTopNode = topNode;
 		}
 		
-		setTimeout(function(){_firstToFill.fill(3);},3000);
+		if(typeof _autoStart != 'undefined' && _autoStart != null){
+			_startTimer = setTimeout(function(){_firstToFill.fill(3);},_autoStart);
+		}
+		
+		_addButtonEvents();
 	
+	}
+	
+	function _addButtonEvents(){
+		
+		//This allows you to have a speed up button
+		$(".speedUp").click(function(){
+			gameOptionsManager.fillSpeed = 100;
+		});
+		
+		//this is used by the level editor to select a tile
+		if(gameOptionsManager.godMode){
+			$(".plumbing-creator li").click(function(){
+				gameOptionsManager.selectedPipeValue = $(this).attr("data-pipe").split(",");
+			});
+		}
+		//this is used to start the water
+		$(".start-water").click(function(){
+			PipeGame.startWater();
+		});
+		
+		//this sets up the random pipe generator if we are in additive mode
+		if(gameOptionsManager.additiveMode == true){
+			$(".plumbing li").click(_generatePipe);
+			_generatePipe();
+		}
+	
+	}
+	
+	function _generatePipe(){
+		
+		var pipeOptions = [
+			[0,1,0,1],
+			[0,0,1,1],
+			[0,1,1,0],
+			[1,1,0,0],
+			[1,0,0,1],
+			[0,1,1,0],
+			[1,1,1,0]
+		];
+		
+		var num = Math.floor(Math.random()*pipeOptions.length);
+		gameOptionsManager.selectedPipeValue = pipeOptions[num];
+		var newclass= "pipe-" + pipeOptions[num].toString().replace(/,/g,"");
+		$('.next-pipe span').removeClass().addClass(newclass);
+	}
+	
+	function _startWater(){
+		clearInterval(_startTimer);
+		_firstToFill.fill(3);
 	}
 	
 	
 	return{
 		setGameBoard:_setGameBoard,
 		configure:_configure,
-		fillSpeed: _fillSpeed
+		fillSpeed: _fillSpeed,
+		startWater: _startWater
 	}
 	
 })();
-
-$(document).ready(function(){
-
-	PipeGame.configure({
-		cols: 4,
-		rows: 6,
-		startX:0,
-		StartY:0	
-	});
-	
-	var board =[[[1,1,1,0],[1,1,1,0],[1,0,1,0],[1,0,1,0]],
-				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
-				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
-				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
-				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
-				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
-				[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],
-				[[1,0,1,0],[1,0,1,0],[1,0,0,1],[1,0,0,1]]];
-	
-	PipeGame.setGameBoard(board);
-	
-	$(".speedUp").click(function(){
-			gameOptionsManager.fillSpeed = 100;
-	});
-});

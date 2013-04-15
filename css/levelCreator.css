@@ -1,0 +1,40 @@
+
+.plumbing-creator {
+	margin:auto;
+
+	padding:0px;
+}
+ .plumbing-creator{
+ 	background:#7b4f03;
+ 	float:left;
+ 	
+ }
+
+.plumbing-creator ul li{
+	width:71px;
+	height:71px;
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+	background-color:#000000;
+	overflow: hidden;
+	
+}
+
+
+.plumbing-creator ul li{
+	width:71px;
+	height:71px;
+	margin:5px;
+	border:none;
+	overflow: hidden;
+	
+}
+.start-water{
+	width: 285px;
+	height: 25px;
+	background: #ffffff;
+	float: left;
+	clear: left;
+	border: #000000 1px solid;
+	margin-bottom: 5px;
+}
