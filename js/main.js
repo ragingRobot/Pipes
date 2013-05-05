@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
 	PipeGame.configure({
-		cols: 8,
-		rows: 4,
+		cols: 4,
+		rows: 5,
 		startX:0,
 		StartY:0,
 		lastX:7,
