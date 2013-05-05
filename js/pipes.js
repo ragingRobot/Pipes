@@ -173,16 +173,13 @@ Pipe.prototype.setHTMLElement= function(element){
 	/***********************************************************************
 	 * 
 	 ***********************************************************************/
-	var thispipe = this;
 	var eventname = "click";
 	
 	if(window.mobilecheck()){
 		eventname = "touchstart";
 	}
 	this._htmlElement = element;
-	this._htmlElement.bind( eventname ,function(e){
-		thispipe.clicked();
-	});
+	this._htmlElement.bind( eventname ,this.clicked.bind(this));
 }
 
 Pipe.prototype.clicked = function(){
@@ -190,8 +187,10 @@ Pipe.prototype.clicked = function(){
 	 * 
 	 ***********************************************************************/
 	if(gameOptionsManager.additiveMode || gameOptionsManager.godMode){
-		if(gameOptionsManager.selectedPipeValue != null && typeof gameOptionsManager.selectedPipeValue != 'undefined'){
-			this.setConnectionStatusList(gameOptionsManager.selectedPipeValue);
+		if(! this.full){
+			if(gameOptionsManager.selectedPipeValue != null && typeof gameOptionsManager.selectedPipeValue != 'undefined'){
+				this.setConnectionStatusList(gameOptionsManager.selectedPipeValue);
+			}
 		}
 	}else{
 		this.rotate();
@@ -387,12 +386,15 @@ var PipeGame = (function(){
 		
 		var pipeOptions = [
 			[0,1,0,1],
+			[1,0,1,0],
 			[0,0,1,1],
 			[0,1,1,0],
 			[1,1,0,0],
 			[1,0,0,1],
-			[0,1,1,0],
-			[1,1,1,0]
+			[1,1,1,0],
+			[0,1,1,1],
+			[1,1,0,1],
+			[1,0,1,1]
 		];
 		
 		var num = Math.floor(Math.random()*pipeOptions.length);
