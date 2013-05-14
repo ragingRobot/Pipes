@@ -11,7 +11,8 @@ var gameOptionsManager = {
 	outOfPlayAreaKills: false,
 	additiveMode: false,
 	godMode: false,
-	selectedPipeValue: [1,1,1,0]//null
+	selectedPipeValue: [1,1,1,0],//null
+	topLeftPipe:null
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -260,7 +261,7 @@ var PipeGame = (function(){
 	var _fillSpeed = 3000;
 	var _startTimer;
 	var _autoStart = null;
-	
+
 	function _configure(options){
 		/***************************************************************************************
 		 * This sets all of the options
@@ -290,6 +291,8 @@ var PipeGame = (function(){
 		var nodeAbove;
 		var bottomNode;
 		
+		$(".plumbing").html("");
+		
 		if(typeof level != 'undefined'){
 			
 			_numCols = level.length;
@@ -304,7 +307,9 @@ var PipeGame = (function(){
 			for(var j = 0 ; j < _numRows; j++){
 			
 				bottomNode = new Pipe();
-				
+				if(i ==0 && j == 0){
+					gameOptionsManager.topLeftPipe = bottomNode;
+				}
 				if(typeof level != 'undefined'){
 					bottomNode.setConnectionStatusList(level[i][j]);
 				}else{
@@ -400,13 +405,28 @@ var PipeGame = (function(){
 		clearInterval(_startTimer);
 		_firstToFill.fill(3);
 	}
+	function _generateJSON(){
+		var json = [];
+	$(".plumbing ul").each(function(i){
+		json.push([])
+		$(this).find("li").each(function(j){
+			var val = $(this).find("span").first().attr("class");
+			val = val.replace("pipe-","").split("");
+			
+;			json[i].push(val);
+		});
+	});
+		console.log(JSON.stringify(json));
+		return json;
+	}
 	
 	
 	return{
 		setGameBoard:_setGameBoard,
 		configure:_configure,
 		fillSpeed: _fillSpeed,
-		startWater: _startWater
+		startWater: _startWater,
+		generateJSON: _generateJSON
 	}
 	
 })();
