@@ -6,27 +6,26 @@
 }
  .plumbing-creator{
  	background:#7b4f03;
- 	float:left;
- 	
+ 	width:300px;
+ 	display:block;
+ 	overflow: hidden;
+ 	height:74px;
  }
 
-.plumbing-creator ul li{
-	width:71px;
-	height:71px;
-	border-right:1px solid #000000;
-	border-bottom:1px solid #000000;
-	background-color:#000000;
-	overflow: hidden;
-	
+.plumbing-creator ul{
+	width: 1000px;
+	height:74px;
 }
 
 
 .plumbing-creator ul li{
-	width:71px;
-	height:71px;
-	margin:5px;
-	border:none;
+	width: 71px;
+	height: 71px;
+	margin: 1px;
+	border: none;
 	overflow: hidden;
+	background-color:#000000;
+	float: left;
 	
 }
 .start-water{
