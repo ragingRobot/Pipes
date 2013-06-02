@@ -6,9 +6,9 @@ $(document).ready(function(){
 		startX:0,
 		StartY:0,
 		lastX:3,
-		lastY:0,
+		lastY:4,
 		additiveMode: true,
-		autoStart: 20000
+		autoStart: 30000
 	});
 	
 	var board =[[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
