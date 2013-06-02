@@ -7,6 +7,10 @@
 	display: block;
 	width: 288px;
 	height: 359px;
+	margin-top: 25px;
+	z-index: 1;
+	position: relative;
+	
 }
 .plumbing ul, .plumbing-creator ul{
 	
@@ -27,7 +31,15 @@
 }
 
 
-
+.pipe-strip{
+	width: 100%;
+	height: 71px;
+	background: URL(".././img/closedPipe.png") center center repeat-x #e8e6e6;
+	position: absolute;
+	top: 24px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
 .water
 {
 	width:0px;
@@ -121,7 +133,7 @@ body, html{
 .plumbing {
 	background: #e8e6e6;
 	padding: 5px;
-	border: 1px solid #e8e6e6;
+	border: 3px solid #e8e6e6;
 	-webkit-box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
 	-moz-box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
 	box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
@@ -129,11 +141,31 @@ body, html{
 }
 .options{
 	background: #e8e6e6;
-width: 252px;
+width: 299px;
 margin: auto;
 height: 47px;
 padding-top: 6px;
 margin-top:-1px;
+}
+
+@font-face {
+  font-family: 'SpicyRice';
+  font-style: normal;
+  font-weight: 400;
+  src: url(".././fonts/SpicyRice-Regular.ttf");
+}
+
+.timer {
+	float: left;
+	padding: 6px;
+	font-family: 'SpicyRice';
+	font-size: 28px;
+	padding-top: 0px;
+	width: 44px;
+	overflow: visible;
+	color: rgba(10,60,150, 0.8);
+    text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+    text-align: center;
 }
 
 .speedUp {
@@ -185,8 +217,37 @@ margin-top: -4px;
 }
 
 .additiv-options .speedUp{
-	width: 150px;
+	width: 97px;
 	float: left;
 	margin-left: 10px;
 	margin-top: 18px;
 }
+
+.additiv-options .timer{
+	margin-top:16px;
+}
+
+.message-holder{
+	position:fixed;
+	top:0px;
+	width:100%;
+	height:100%;
+	z-index:1000;
+	background: rgba(0,0,0, 0.5);
+	display:none;
+	
+}
+.message-holder .message-box{
+	width: 300px;
+	height: 150px;
+	margin-top: 80px;
+	background: URL(".././img/messageBox.png")top center no-repeat;
+	display: inline-block;
+	padding-top: 86px;
+	font-size: 17px;
+	color: rgba(10,60,150, 0.8);
+    text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+    text-align: center;
+    font-family: 'SpicyRice';
+}
+

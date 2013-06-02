@@ -5,10 +5,10 @@ $(document).ready(function(){
 		rows: 5,
 		startX:0,
 		StartY:0,
-		lastX:7,
+		lastX:3,
 		lastY:0,
 		additiveMode: true,
-		autoStart: 12000
+		autoStart: 20000
 	});
 	
 	var board =[[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
