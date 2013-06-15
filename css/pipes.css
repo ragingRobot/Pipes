@@ -1,12 +1,9 @@
-/**************************************************************************************************************
- * Pipe styles below this line
- * ***********************************************************************************************************/
 .plumbing{
 	margin:auto;
 	padding:0px;
 	display: block;
 	width: 288px;
-	height: 359px;
+	height: 427px;
 	z-index: 1;
 	position: relative;
 	
@@ -29,7 +26,6 @@
 	position:relative;
 	
 }
-
 
 .pipe-strip{
 	width: 100%;
@@ -54,7 +50,7 @@
 	background: URL(".././img/closedPipe.png") center center repeat-x #e8e6e6;
 	position: relative;
 	float: right;
-	top: 368px;
+	top: 435px;
 	padding-top: 0px;
 	padding-bottom: 20px;
 }
@@ -78,6 +74,10 @@
 }
 .water.right, .water2.right{
 	float:right;
+}
+.water2.right{
+	position:relative;
+	top: -49px;
 }
 .water.verticle, .water2.verticle
 {
@@ -275,6 +275,7 @@ margin: auto;
 height: 69px;
 padding-top: 0px;
 padding-top: 5px;
+position: relative;
 }
 
 .create-options{
@@ -286,6 +287,7 @@ padding-top: 5px;
 	height: 36px;
 	margin-top: 26px;
 	padding-top: 10px;
+	position: relative;
 }
 
 .next-pipe{
@@ -333,4 +335,6 @@ padding-top: 5px;
     text-align: center;
     font-family: 'SpicyRice';
 }
-
+.last-level .next-level{
+	display:none;
+}

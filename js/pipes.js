@@ -263,6 +263,14 @@ DisplayTimer.prototype.start = function() {
 	 ***************************************************************************************/
 	this.timeout = setTimeout(this.tick.bind(this), 1000);
 }
+DisplayTimer.prototype.stop = function() {
+	/***************************************************************************************
+	 * This stops the timer
+	 ***************************************************************************************/
+	clearTimeout(this.timeout);
+	this.displayTime = 0;
+	$(".timer").html(this.addLeadingDigit(this.displayTime));
+}
 DisplayTimer.prototype.tick = function() {
 	/***************************************************************************************
 	 * This updates the display timer
@@ -348,6 +356,7 @@ var PipeGame = (function() {
 		var nodeAbove;
 		var bottomNode;
 
+		gameOptionsManager.fillSpeed = 1500;
 		$(".plumbing").html("");
 
 		if ( typeof level != 'undefined') {
@@ -483,16 +492,23 @@ var PipeGame = (function() {
 		//This allows you to have a speed up button
 		$(".speedUp").click(function() {
 			gameOptionsManager.fillSpeed = 100;
+			PipeGame.startWater();
 		});
 
 		//this is used by the level editor to select a tile
 		if (gameOptionsManager.godMode) {
 			$(".plumbing-creator li").click(function() {
+				$(".plumbing-creator li").removeClass("active");
+				$(this).addClass("active");
 				gameOptionsManager.selectedPipeValue = $(this).attr("data-pipe").split(",");
 			});
 		}
+		
+	
+		
 		//this is used to start the water
 		$(".start-water").click(function() {
+			
 			PipeGame.startWater();
 		});
 
@@ -512,7 +528,7 @@ var PipeGame = (function() {
 		/***************************************************************************************
 		 * This generates a random pipe to be used for additive mode
 		 ***************************************************************************************/
-		var pipeOptions = [[0, 1, 0, 1], [1, 0, 1, 0], [0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0], [1, 0, 0, 1], [1, 2, 1, 2], [2, 1, 2, 1]];
+		var pipeOptions = [[0, 1, 0, 1], [1, 0, 1, 0], [0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0], [1, 0, 0, 1],[0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0], [1, 0, 0, 1], [2, 1, 2, 1],[1,2, 1, 2]];
 
 		var num = Math.floor(Math.random() * pipeOptions.length);
 		gameOptionsManager.selectedPipeValue = pipeOptions[num];
@@ -526,7 +542,12 @@ var PipeGame = (function() {
 		 * This starts the water flow
 		 ***************************************************************************************/
 		clearInterval(_startTimer);
-		_firstToFill.fill(3);
+		if(typeof _displayTimer != "undefined" && _displayTimer != null){
+			_displayTimer.stop();
+		}
+		if(_firstToFill.full == 0){
+			_firstToFill.fill(3);
+		}
 	}
 
 	function _generateJSON() {
