@@ -50,7 +50,10 @@ body, html{
         width:200px;
         
         -webkit-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
--moz-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
+		-moz-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
+		box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
  }
+ .logo {
+		margin-top: 47px;
+}
   

@@ -1,3 +1,86 @@
+@keyframes animatedBackgroundUp {
+			from { background-position: 0 0; }
+			to { background-position: 0 -100px; }
+		}
+		@-webkit-keyframes animatedBackgroundUp {
+			from { background-position: 0 0; }
+			to { background-position: 0 -100px; }
+		}
+		@-ms-keyframes animatedBackgroundUp {
+			from { background-position: 0 0; }
+			to { background-position: 0 -100px; }
+		}
+		@-moz-keyframes animatedBackgroundUp {
+			from { background-position: 0 0; }
+			to { background-position: 0 -100px; }
+		}
+		
+		
+		
+		@keyframes animatedBackgroundDown {
+			from { background-position: 0 0; }
+			to { background-position: 0 100px; }
+		}
+		@-webkit-keyframes animatedBackgroundDown {
+			from { background-position: 0 0; }
+			to { background-position: 0 100px; }
+		}
+		@-ms-keyframes animatedBackgroundDown {
+			from { background-position: 0 0; }
+			to { background-position: 0 100px; }
+		}
+		@-moz-keyframes animatedBackgroundDown {
+			from { background-position: 0 0; }
+			to { background-position: 0 100px; }
+		}
+		
+		
+		
+		
+		@keyframes animatedBackgroundRight {
+			from { background-position: 0 0; }
+			to { background-position: -100px 0; }
+		}
+		@-webkit-keyframes animatedBackgroundRight {
+			from { background-position: 0 0; }
+			to { background-position: -100px 0; }
+		}
+		@-ms-keyframes animatedBackgroundRight {
+			from { background-position: 0 0; }
+			to { background-position: -100px ; }
+		}
+		@-moz-keyframes animatedBackgroundRight  {
+			from { background-position: 0 0; }
+			to { background-position: -100px 0; }
+		}
+		
+		
+		
+		@keyframes animatedBackgroundLeft {
+			from { background-position: 0 0; }
+			to { background-position: 100px 0; }
+		}
+		@-webkit-keyframes animatedBackgroundLeft {
+			from { background-position: 0 0; }
+			to { background-position: 100px 0; }
+		}
+		@-ms-keyframes animatedBackgroundLeft {
+			from { background-position: 0 0; }
+			to { background-position: 100px ; }
+		}
+		@-moz-keyframes animatedBackgroundLeft  {
+			from { background-position: 0 0; }
+			to { background-position: 100px 0; }
+		}
+		
+		
+		
+		
+body{
+	-webkit-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
+	-moz-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
+	box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
+}
 .plumbing{
 	margin:auto;
 	padding:0px;
@@ -58,12 +141,44 @@
 {
 	width:0px;
 	height:100%;
-	background:#509aff;	
+	background-image:url(.././img/water.jpg);	
+	background-position: 0px 0px;
 	margin-top: -71px;
 	z-index: 1;
 	position: relative;
 	float: left;
+	background-position: 0px 0px;
+
+			animation: animatedBackgroundLeft 5s linear infinite;
+			-ms-animation: animatedBackgroundLeft 5s linear infinite;
+			-moz-animation: animatedBackgroundLeft 5s linear infinite;
+			-webkit-animation: animatedBackgroundLeft 5s linear infinite;
 }
+
+
+.water.verticle, .water2.verticle{
+	animation: animatedBackgroundDown 5s linear infinite;
+			-ms-animation: animatedBackgroundDown 5s linear infinite;
+			-moz-animation: animatedBackgroundDown 5s linear infinite;
+			-webkit-animation: animatedBackgroundDown 5s linear infinite;
+}
+
+.water.verticle.bottom, .water2.verticle.bottom {
+	animation: animatedBackgroundUp 5s linear infinite;
+			-ms-animation: animatedBackgroundUp 5s linear infinite;
+			-moz-animation: animatedBackgroundUp 5s linear infinite;
+			-webkit-animation: animatedBackgroundUp 5s linear infinite;
+}
+
+
+
+.water.right, .water2.right{
+	animation: animatedBackgroundRight 5s linear infinite;
+			-ms-animation: animatedBackgroundRight 5s linear infinite;
+			-moz-animation: animatedBackgroundRight 5s linear infinite;
+			-webkit-animation: animatedBackgroundRight 5s linear infinite;
+}
+
 .water2{
 	z-index: 2;
 	position: absolute;
@@ -88,7 +203,7 @@
 	width: 30px;
 	margin: auto;
 	top: 0px;
-	left: 20px;
+	left: 21px;
 }
 
 .pipe-1212 + .water2-background{
@@ -232,7 +347,7 @@ margin-top: 25px;
     text-align: center;
 }
 
-.speedUp, .start-water {
+.speedUp, .start-water , .menu-button{
 	   background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
         background:-moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
         background:-webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
@@ -258,7 +373,6 @@ margin-top: 25px;
         text-decoration:none;
         
         text-shadow:0px 1px 0px #7cacde;
-        width:192px;
         
         -webkit-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
 -moz-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
@@ -320,7 +434,9 @@ position: relative;
 	z-index:1000;
 	background: rgba(0,0,0, 0.5);
 	display:none;
-	
+	-webkit-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
+	-moz-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
+	box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
 }
 .message-holder .message-box{
 	width: 300px;
@@ -338,3 +454,4 @@ position: relative;
 .last-level .next-level{
 	display:none;
 }
+
