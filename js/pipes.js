@@ -317,6 +317,7 @@ var PipeGame = (function() {
 	var _lastToFill;
 	var _firstToFill;
 	var _score = 0;
+	var _scoreMultiplier = 1;
 	var _numberOfPipesFilled = 0;
 	var _fillSpeed = 3000;
 	var _startTimer;
@@ -363,6 +364,8 @@ var PipeGame = (function() {
 		var bottomNode;
 		
 		_score  = 0;
+		_scoreMultiplier = 1;
+		
 		gameOptionsManager.fillSpeed = 1500;
 		$(".plumbing").html("");
 
@@ -503,6 +506,7 @@ var PipeGame = (function() {
 
 		//This allows you to have a speed up button
 		$(".speedUp").click(function() {
+			_scoreMultiplier += 1;
 			gameOptionsManager.fillSpeed = 100;
 			PipeGame.startWater();
 		});
@@ -585,7 +589,7 @@ var PipeGame = (function() {
 		/***************************************************************************************
 		 * This adds 50 points to the users score
 		 ***************************************************************************************/
-		_score += 50;
+		_score += 50 * _scoreMultiplier;
 		
 	}
 	return {
