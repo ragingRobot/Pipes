@@ -32,6 +32,7 @@ var Node = function(connections, connectionStatus) {
 	};
 	this._connections = connections || defaults.connections;
 	this._connectionStatus = connectionStatus || defaults.connectionStatus;
+	this.proxy = $({});
 
 }
 
@@ -64,6 +65,10 @@ Node.prototype.setConnectionStatusList = function(connectionStatus) {
 	this._connectionStatus = null;
 	this._connectionStatus = connectionStatus;
 
+}
+
+Node.prototype.on = function(evt, callback){
+	this.proxy.on(evt, callback);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SETUP Pipe OBJECTS
@@ -166,6 +171,7 @@ Pipe.prototype.fill = function(startConnectionIndex) {
 
 					if (thispipe._connectionStatus[i] == pipeLine  && i != startConnectionIndex) {
 						if (thispipe._connections[i] != null && typeof thispipe._connections[i] != 'undefined') {
+							thispipe.proxy.trigger("full");
 							thispipe._connections[i].fill(from);
 						} else if (gameOptionsManager.outOfPlayAreaKills) {
 							//lose :(
@@ -316,7 +322,7 @@ var PipeGame = (function() {
 	var _startTimer;
 	var _autoStart = null;
 	var _displayTimer = null;
-	var _points = 1000;
+	
 
 	function _configure(options) {
 		/***************************************************************************************
@@ -355,7 +361,8 @@ var PipeGame = (function() {
 		var pipeclass;
 		var nodeAbove;
 		var bottomNode;
-
+		
+		_score  = 0;
 		gameOptionsManager.fillSpeed = 1500;
 		$(".plumbing").html("");
 
@@ -373,7 +380,12 @@ var PipeGame = (function() {
 			for (var j = 0; j < _numRows; j++) {
 
 				bottomNode = new Pipe();
-
+				
+				
+				bottomNode.on("full",function(){
+					_addPoints();
+				}); 
+				
 				if (i == 0 && j == 0) {
 					gameOptionsManager.topLeftPipe = bottomNode;
 				}
@@ -470,7 +482,7 @@ var PipeGame = (function() {
 		/***************************************************************************************
 		 * This shows the game over message
 		 ***************************************************************************************/
-		PipeGame.showMessage("You Lost<br/><a class=\"retry\">Retry</a>");
+		PipeGame.showMessage("You Lost<br/>+" + _score  + " Points<br/><a class=\"retry\">Retry</a>");
 	}
 
 	function _gameWin() {
@@ -478,9 +490,9 @@ var PipeGame = (function() {
 		 * This shows the game win message
 		 ***************************************************************************************/
 		if (!gameOptionsManager.additiveMode) {
-			PipeGame.showMessage("Stage Cleared <br/> +" + _points + " Points</br> <a class=\"next-level\">Next Level</a>");
+			PipeGame.showMessage("Stage Cleared <br/> +" + _score  + " Points</br> <a class=\"next-level\">Next Level</a>");
 		} else {
-			PipeGame.showMessage("Stage Cleared <br/> +" + _points + " Points</br> <a class=\"retry\">Play Again</a>");
+			PipeGame.showMessage("Stage Cleared <br/> +" + _score  + " Points</br> <a class=\"retry\">Play Again</a>");
 		}
 	}
 
@@ -569,7 +581,13 @@ var PipeGame = (function() {
 		console.log(JSON.stringify(json));
 		return json;
 	}
-
+	function _addPoints() {
+		/***************************************************************************************
+		 * This adds 50 points to the users score
+		 ***************************************************************************************/
+		_score += 50;
+		
+	}
 	return {
 		/***************************************************************************************
 		 * This returns the public methods available for the PipeGame object
