@@ -13,7 +13,6 @@ var gameOptionsManager = {
 	selectedPipeValue : [1, 1, 1, 0], //null
 	topLeftPipe : null
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SETUP Node OBJECTS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,8 +32,27 @@ var Node = function(connections, connectionStatus) {
 	this._connections = connections || defaults.connections;
 	this._connectionStatus = connectionStatus || defaults.connectionStatus;
 	this.proxy = $({});
+	
+	Node.nodes.push(this);
 
 }
+
+Node.nodes = [];
+Node.removeAll = function(){
+	Node.nodes = [];
+}
+Node.pauseAll = function(){
+	for( var i = 0; i < Node.nodes.length;i++){
+		Node.nodes[i].pause();
+	}
+	
+}
+Node.unpauseAll = function(){
+	for( var i = 0; i < Node.nodes.length;i++){
+		Node.nodes[i].unpause();
+	}
+}
+	
 
 Node.prototype.setConnection = function(connectionIndex, connectionNode) {
 	/***********************************************************************
@@ -75,9 +93,8 @@ Node.prototype.on = function(evt, callback){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Pipe = Node.prototype.constructor;
 
-Pipe.prototype.full = 0;
 Pipe.prototype = new Node();
-
+Pipe.prototype.full = 0;
 Pipe.prototype.rotate = function(direction) {
 	/***********************************************************************
 	 * This will shift the values of the _connectionStatus array. it accepts
@@ -100,7 +117,14 @@ Pipe.prototype.rotate = function(direction) {
 	}
 
 }
-
+Pipe.prototype.pause = function(){
+	this._htmlElement.find(".water").pause();
+	this._htmlElement.find(".water2").pause();
+}
+Pipe.prototype.unpause = function(){
+	this._htmlElement.find(".water").resume();
+	this._htmlElement.find(".water2").resume();
+}
 Pipe.prototype.fill = function(startConnectionIndex) {
 	/***********************************************************************
 	 * This will gradually fill the pipe then call fill on the ones it is
@@ -109,12 +133,6 @@ Pipe.prototype.fill = function(startConnectionIndex) {
 	 ***********************************************************************/
 	if ( typeof startConnectionIndex != 'undefined' && (this.full != this._connectionStatus[startConnectionIndex] || this.full == 0)) {
 		
-		
-		/* REMOVE
-		 * I dont think this is needed here so I will remove it before i commit
-		var newclass = this._connectionStatus.toString().replace(/,/g, "");
-		this._htmlElement.find("span").removeClass().addClass("pipe-" + newclass);
-		*/
 		var waterLayer = "";
 		
 		if(this._connectionStatus[startConnectionIndex] == 2){
@@ -154,6 +172,9 @@ Pipe.prototype.fill = function(startConnectionIndex) {
 
 			thispipe._htmlElement.find(".water"+waterLayer).animate(animationOptions, gameOptionsManager.fillSpeed, function() {
 			thispipe._htmlElement.addClass("full");
+			if(waterLayer == 2){
+				thispipe._htmlElement.addClass("full2");
+			}
 			
 			for (var i = 0; i < thispipe._connectionStatus.length; i++) {
 					
@@ -260,14 +281,31 @@ var DisplayTimer = function(timeLength) {
 	 * This is used to show a count down until the water starts to the user
 	 ***************************************************************************************/
 	this.displayTime = timeLength / 1000;
-
+	this.paused = false;
 	$(".timer").html(this.addLeadingDigit(this.displayTime));
 }
-DisplayTimer.prototype.start = function() {
+DisplayTimer.prototype.start = function(callback) {
 	/***************************************************************************************
 	 * This starts the timer
 	 ***************************************************************************************/
+	this.callback = callback;
 	this.timeout = setTimeout(this.tick.bind(this), 1000);
+}
+DisplayTimer.prototype.pause = function() {
+	/***************************************************************************************
+	 * This pauses the timer
+	 ***************************************************************************************/
+	this.paused = true;
+}
+DisplayTimer.prototype.unpause = function() {
+	/***************************************************************************************
+	 * This unpauses the timer
+	 ***************************************************************************************/
+	this.paused = false;
+	if(this.displayTime > 0){
+		this.timeout = setTimeout(this.tick.bind(this), 1000);
+	}
+
 }
 DisplayTimer.prototype.stop = function() {
 	/***************************************************************************************
@@ -284,8 +322,13 @@ DisplayTimer.prototype.tick = function() {
 	this.displayTime -= 1;
 	if (this.displayTime > 0) {
 		$(".timer").html(this.addLeadingDigit(this.displayTime));
-		this.timeout = setTimeout(this.tick.bind(this), 1000);
+		if(!this.paused ){
+			this.timeout = setTimeout(this.tick.bind(this), 1000);
+		}
 	} else {
+		if(typeof this.callback != "undefined"){
+			this.callback();
+		}
 		$(".timer").html("00");
 	}
 }
@@ -365,6 +408,7 @@ var PipeGame = (function() {
 		
 		_score  = 0;
 		_scoreMultiplier = 1;
+		Node.removeAll();
 		
 		gameOptionsManager.fillSpeed = 1500;
 		$(".plumbing").html("");
@@ -440,11 +484,11 @@ var PipeGame = (function() {
 			//show water warning
 			_showStartMessage("Water Starts in <br/>" + (_autoStart / 1000) + " Seconds", function() {
 				//start timer
-				_displayTimer.start()
-				_startTimer = setTimeout(function() {
+				_displayTimer.start(function() {
 					_firstToFill.fill(3);
 
-				}, _autoStart);
+				})
+				
 			});
 		}
 
@@ -592,6 +636,18 @@ var PipeGame = (function() {
 		_score += 50 * _scoreMultiplier;
 		
 	}
+	function _pause(){
+		if(_displayTimer != null){
+			_displayTimer.pause();
+		}
+		Node.pauseAll();
+	}
+	function _unpause(){
+		Node.unpauseAll();
+		if(_displayTimer != null){
+			_displayTimer.unpause();
+		}
+	}
 	return {
 		/***************************************************************************************
 		 * This returns the public methods available for the PipeGame object
@@ -603,7 +659,9 @@ var PipeGame = (function() {
 		generateJSON : _generateJSON,
 		showMessage : _showMessage,
 		gameOver : _gameOver,
-		gameWin : _gameWin
+		gameWin : _gameWin,
+		pause: _pause,
+		unpause: _unpause
 	}
 
 })();
