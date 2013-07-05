@@ -591,7 +591,7 @@ var PipeGame = (function() {
 				$(".plumbing").hide();
 				_pause();
 			}else{
-				$(this).removeClass("active");
+				$(".menu-button").removeClass("active");
 				$(".pause-menu").hide();
 				$(".plumbing").show();
 				_unpause();
