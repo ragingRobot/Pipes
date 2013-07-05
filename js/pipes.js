@@ -366,6 +366,7 @@ var PipeGame = (function() {
 	var _startTimer;
 	var _autoStart = null;
 	var _displayTimer = null;
+	var _paused = false;
 	
 
 	function _configure(options) {
@@ -581,6 +582,21 @@ var PipeGame = (function() {
 		$(document).on("touchstart", ".retry", function() {
 			document.location.reload(true);
 		});
+		
+		
+		$(document).on("touchstart", ".menu-button", function() {
+			if(!_paused){
+				$(this).addClass("active");
+				$(".pause-menu").show();
+				$(".plumbing").hide();
+				_pause();
+			}else{
+				$(this).removeClass("active");
+				$(".pause-menu").hide();
+				$(".plumbing").show();
+				_unpause();
+			}
+		});
 
 	}
 
@@ -637,12 +653,18 @@ var PipeGame = (function() {
 		
 	}
 	function _pause(){
+		
+		_paused = true;
+		
 		if(_displayTimer != null){
 			_displayTimer.pause();
 		}
 		Node.pauseAll();
 	}
 	function _unpause(){
+		
+		_paused = false;
+		
 		Node.unpauseAll();
 		if(_displayTimer != null){
 			_displayTimer.unpause();

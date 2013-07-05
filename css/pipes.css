@@ -340,15 +340,15 @@ margin-top: 25px;
 
 .timer {
 	float: left;
-	padding: 6px;
+	padding: 0px;
 	font-family: 'SpicyRice';
 	font-size: 28px;
 	padding-top: 0px;
-	width: 44px;
+	width: 39px;
 	overflow: visible;
 	color: rgba(10,60,150, 0.8);
-    text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
-    text-align: center;
+	text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+	text-align: center;
 }
 
 .speedUp, .start-water , .menu-button{
@@ -373,7 +373,7 @@ margin-top: 25px;
         font-family:arial;
         font-size:15px;
         font-weight:bold;
-        padding:6px 24px;
+        padding:6px 15px;
         text-decoration:none;
         
         text-shadow:0px 1px 0px #7cacde;
@@ -458,4 +458,75 @@ position: relative;
 .last-level .next-level{
 	display:none;
 }
+.pause-menu{
+	width: 288px;
+height: 427px;
+	background: #e8e6e6;
+padding: 5px;
+border: 3px solid #e8e6e6;
+padding-bottom: 9px;
+	margin:auto;
+	background:#63B8EE;
+	position: relative;
+	display: none;
+	-webkit-box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
+-moz-box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
+box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
+}
+.pause-menu h2{
+	font-family: 'SpicyRice';
+	color:red;
+	text-shadow: 1px 1px white, -1px -1px #444
+}
 
+.menu-button{
+	width: 0px;
+	float: right;
+	margin-right: 3px;
+	text-indent: -9999px;
+}
+.pause-menu .button{
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+	background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+	background-color: #63b8ee;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	border: 1px solid #3866a3;
+	display: inline-block;
+	color: #14396a;
+	font-family: arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #7cacde;
+	-webkit-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
+	-moz-box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
+	box-shadow: -1px 1px 10px rgba(0,0,0,0.35), inset -1px 1px 5px white;
+	width: 204px;
+	margin-top: 11px;
+	text-indent: 0px;
+	float: none;
+}
+
+.additiv-options .menu-button {
+	margin-top: 18px;
+}
+.options .menu-button, .additiv-options .menu-button, .create-options .menu-button{
+	background-image:URL(.././img/menu-icon.png);
+	background-position:center center;
+	background-repeat: no-repeat;
+}
+.menu-button.active {
+	
+-webkit-box-shadow: inset -2px 2px 6px #052756, 0px 1px 0px #60c9f0;
+-moz-box-shadow: inset -2px 2px 6px #052756, 0px 1px 0px #60c9f0;
+-o-box-shadow: inset -2px 2px 6px #052756, 0px 1px 0px #60c9f0;
+box-shadow: inset -2px 2px 6px #052756, 0px 1px 0px #60c9f0;
+}
