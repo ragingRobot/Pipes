@@ -474,9 +474,10 @@ padding-bottom: 9px;
 box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
 }
 .pause-menu h2{
+	text-shadow: 1px 1px white, -1px -1px #444;
 	font-family: 'SpicyRice';
-	color:red;
-	text-shadow: 1px 1px white, -1px -1px #444
+	color: #252150;
+	letter-spacing: 5px;
 }
 
 .menu-button{

@@ -39,9 +39,13 @@ var Node = function(connections, connectionStatus) {
 
 Node.nodes = [];
 Node.removeAll = function(){
+	for( var i = 0; i < Node.nodes.length;i++){
+		Node.nodes[i] = null;
+	}
 	Node.nodes = [];
 }
 Node.pauseAll = function(){
+	
 	for( var i = 0; i < Node.nodes.length;i++){
 		Node.nodes[i].pause();
 	}
@@ -367,7 +371,7 @@ var PipeGame = (function() {
 	var _autoStart = null;
 	var _displayTimer = null;
 	var _paused = false;
-	
+	var _eventsAdded = false;
 
 	function _configure(options) {
 		/***************************************************************************************
@@ -407,12 +411,28 @@ var PipeGame = (function() {
 		var nodeAbove;
 		var bottomNode;
 		
+		if(typeof window.SoundManager != "undefined"){
+			window.SoundManager.reset();
+			if(gameOptionsManager.godMode == true){
+				window.SoundManager.startBackground("three");
+			}else if(gameOptionsManager.additiveMode == true){
+				window.SoundManager.startBackground("two");
+			}else{
+				window.SoundManager.startBackground("one");
+			}
+		}
+		_lastToFill = null;
+	    _firstToFill = null;
+		_paused = false;
 		_score  = 0;
 		_scoreMultiplier = 1;
+		_displayTimer = null;
+		_startTimer = null;
 		Node.removeAll();
 		
 		gameOptionsManager.fillSpeed = 1500;
 		$(".plumbing").html("");
+		
 
 		if ( typeof level != 'undefined') {
 
@@ -476,6 +496,7 @@ var PipeGame = (function() {
 			prevTopNode = topNode;
 		}
 
+		_displayTimer = null;
 		//this sets the timer if auto start is enabled
 		if ( typeof _autoStart != 'undefined' && _autoStart != null) {
 
@@ -486,15 +507,20 @@ var PipeGame = (function() {
 			_showStartMessage("Water Starts in <br/>" + (_autoStart / 1000) + " Seconds", function() {
 				//start timer
 				_displayTimer.start(function() {
+				if(typeof window.SoundManager != "undefined"){
+					window.SoundManager.startWater();
+				}
 					_firstToFill.fill(3);
 
 				})
 				
 			});
 		}
-
-		_addButtonEvents();
-
+		
+		if(!_eventsAdded){
+			_eventsAdded = true;
+			_addButtonEvents();
+		}
 	}
 
 	function _showStartMessage(message, callback) {
@@ -531,6 +557,10 @@ var PipeGame = (function() {
 		 * This shows the game over message
 		 ***************************************************************************************/
 		PipeGame.showMessage("You Lost<br/>+" + _score  + " Points<br/><a class=\"retry\">Retry</a>");
+		if(typeof window.SoundManager != "undefined"){
+			window.SoundManager.pause();
+			window.SoundManager.playLost();
+		}
 	}
 
 	function _gameWin() {
@@ -541,6 +571,10 @@ var PipeGame = (function() {
 			PipeGame.showMessage("Stage Cleared <br/> +" + _score  + " Points</br> <a class=\"next-level\">Next Level</a>");
 		} else {
 			PipeGame.showMessage("Stage Cleared <br/> +" + _score  + " Points</br> <a class=\"retry\">Play Again</a>");
+		}
+		
+		if(typeof window.SoundManager != "undefined"){
+			window.SoundManager.playWin();
 		}
 	}
 
@@ -584,7 +618,9 @@ var PipeGame = (function() {
 		});
 		
 		
-		$(document).on("touchstart", ".menu-button", function() {
+
+		$(".menu-button").on("touchstart", function() {
+			
 			if(!_paused){
 				$(this).addClass("active");
 				$(".pause-menu").show();
@@ -617,12 +653,19 @@ var PipeGame = (function() {
 		/***************************************************************************************
 		 * This starts the water flow
 		 ***************************************************************************************/
+		 
 		clearInterval(_startTimer);
 		if(typeof _displayTimer != "undefined" && _displayTimer != null){
 			_displayTimer.stop();
 		}
 		if(_firstToFill.full == 0){
 			_firstToFill.fill(3);
+			_startWater();
+			/*
+			if(typeof window.SoundManager != "undefined"){
+				window.SoundManager.startWater();
+			}
+			*/
 		}
 	}
 
@@ -660,6 +703,9 @@ var PipeGame = (function() {
 			_displayTimer.pause();
 		}
 		Node.pauseAll();
+		if(typeof window.SoundManager != "undefined"){
+			window.SoundManager.pause();
+		}
 	}
 	function _unpause(){
 		
@@ -668,6 +714,9 @@ var PipeGame = (function() {
 		Node.unpauseAll();
 		if(_displayTimer != null){
 			_displayTimer.unpause();
+		}
+		if(typeof window.SoundManager != "undefined"){
+			window.SoundManager.unpause();
 		}
 	}
 	return {
