@@ -118,6 +118,10 @@ Pipe.prototype.rotate = function(direction) {
 
 		var newclass = this._connectionStatus.toString().replace(/,/g, "");
 		this._htmlElement.find("span").removeClass().addClass("pipe-" + newclass);
+		
+		if(typeof window.SoundManager != "undefined"){
+				window.SoundManager.playTurn();
+		}
 	}
 
 }
@@ -504,17 +508,15 @@ var PipeGame = (function() {
 			_displayTimer = new DisplayTimer(_autoStart);
 
 			//show water warning
-			_showStartMessage("Water Starts in <br/>" + (_autoStart / 1000) + " Seconds", function() {
+			_showStartMessage("<h2>WARNING</h2><br/>The water will start in <br/>" + (_autoStart / 1000) + " seconds.", function() {
 				//start timer
 				_displayTimer.start(function() {
-				if(typeof window.SoundManager != "undefined"){
-					window.SoundManager.startWater();
-				}
-					_firstToFill.fill(3);
+				
+					_startWater();
 
 				})
 				
-			});
+			},true);
 		}
 		
 		if(!_eventsAdded){
@@ -523,14 +525,27 @@ var PipeGame = (function() {
 		}
 	}
 
-	function _showStartMessage(message, callback) {
+	function _showStartMessage(message, callback, _startmessage) {
 		/***************************************************************************************
 		 * This shows the start message then fades it out
 		 ***************************************************************************************/
+		var popclass = "";
+		var startmessage = _startmessage || false;
+		
+		if(startmessage){
+		
+			popclass = "start";
+			$(".message-box").addClass(popclass);
+		}else{
+			$(".message-box").removeClass("start");
+			popclass = "";
+		}
+		
 		$(".message-box").html(message);
 		$(".message-holder").fadeIn("fast", function() {
 
 			$(this).delay(2000).fadeOut("slow", function() {
+				$(".message-box").removeClass("start");
 				if ( typeof callback != "undefined") {
 					callback();
 				}
@@ -556,7 +571,7 @@ var PipeGame = (function() {
 		/***************************************************************************************
 		 * This shows the game over message
 		 ***************************************************************************************/
-		PipeGame.showMessage("You Lost<br/>+" + _score  + " Points<br/><a class=\"retry\">Retry</a>");
+		PipeGame.showMessage("<h2>You Lost</h2><br/>+" + _score  + " Points<br/><a class=\"button retry\">Retry</a>");
 		if(typeof window.SoundManager != "undefined"){
 			window.SoundManager.pause();
 			window.SoundManager.playLost();
@@ -568,13 +583,17 @@ var PipeGame = (function() {
 		 * This shows the game win message
 		 ***************************************************************************************/
 		if (!gameOptionsManager.additiveMode) {
-			PipeGame.showMessage("Stage Cleared <br/> +" + _score  + " Points</br> <a class=\"next-level\">Next Level</a>");
+			PipeGame.showMessage("<h2>Stage Cleared</h2> <br/> +" + _score  + " Points</br> <a class=\"next-level button\">Next Level</a><a class=\"button\" href=\"index.html\">Main Menu</a>");
 		} else {
-			PipeGame.showMessage("Stage Cleared <br/> +" + _score  + " Points</br> <a class=\"retry\">Play Again</a>");
+			PipeGame.showMessage("<h2>Stage Cleared</h2> <br/> +" + _score  + " Points</br> <a class=\"retry button\">Play Again</a><a class=\"button\" href=\"index.html\">Main Menu</a>");
 		}
 		
 		if(typeof window.SoundManager != "undefined"){
 			window.SoundManager.playWin();
+			var current = parseInt(window.location.hash.substring(1));
+			if(window.SoundManager.getLevelsComplete() < current){
+				window.SoundManager.setLevelsComplete(current);
+			}
 		}
 	}
 
@@ -661,11 +680,12 @@ var PipeGame = (function() {
 		if(_firstToFill.full == 0){
 			_firstToFill.fill(3);
 			_startWater();
-			/*
-			if(typeof window.SoundManager != "undefined"){
-				window.SoundManager.startWater();
-			}
-			*/
+			
+		}
+		
+		if(typeof window.SoundManager != "undefined"){
+			window.SoundManager.startWater();
+			window.SoundManager.vibrate();
 		}
 	}
 

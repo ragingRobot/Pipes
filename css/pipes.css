@@ -322,7 +322,7 @@ body, html{
 }
 .options{
 	background: #e8e6e6;
-width: 299px;
+width: 303px;
 margin: auto;
 height: 47px;
 padding-top: 6px;
@@ -436,7 +436,7 @@ position: relative;
 	width:100%;
 	height:100%;
 	z-index:1000;
-	background: rgba(0,0,0, 0.5);
+	background: rgba(0,0,0, 0.3);
 	display:none;
 	-webkit-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
 	-moz-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
@@ -444,16 +444,30 @@ position: relative;
 }
 .message-holder .message-box{
 	width: 300px;
-	height: 150px;
+	height: 350px;
 	margin-top: 80px;
 	background: URL(".././img/messageBox.png")top center no-repeat;
 	display: inline-block;
 	padding-top: 86px;
 	font-size: 17px;
-	color: rgba(10,60,150, 0.8);
-    text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+	color: #252150;
     text-align: center;
-    font-family: 'SpicyRice';
+    font-family: Arial;
+    
+}
+.message-holder .message-box.start{
+	background: URL(".././img/messageBoxStart.png")top center no-repeat;
+}
+.message-holder .message-box.start h2{
+	margin-top:50px;
+}
+.message-holder .message-box h2{
+	font-family: 'SpicyRice';
+	color: #252150;
+	padding: 0px;
+	margin: 0px;
+	display: inline-block;
+	font-size: 26px;
 }
 .last-level .next-level{
 	display:none;
@@ -486,7 +500,7 @@ box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
 	margin-right: 3px;
 	text-indent: -9999px;
 }
-.pause-menu .button{
+.pause-menu .button, .message-box .button{
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
 	background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
 	background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
@@ -514,6 +528,13 @@ box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
 	margin-top: 11px;
 	text-indent: 0px;
 	float: none;
+}
+.message-box .button{
+	width: 100px;
+	clear: both;
+	display: block;
+	margin: auto;
+	margin-bottom:7px;
 }
 
 .additiv-options .menu-button {
