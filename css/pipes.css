@@ -220,12 +220,12 @@ top: 21px;
 	z-index: 2;
 }
 .pipe-2121 + .water2-background{
-	width: 28px;
-	height:100%;
-	background:#ffffff;
+	width: 26px;
+	height: 100%;
+	background: #ffffff;
 	top: 0px;
-	left: 20px;
-	position:absolute;
+	left: 22px;
+	position: absolute;
 	z-index: 2;
 }
 .water.verticle.bottom, .water2.verticle.bottom{
@@ -469,7 +469,7 @@ position: relative;
 	display: inline-block;
 	font-size: 26px;
 }
-.last-level .next-level{
+.last-level .next-level.button{
 	display:none;
 }
 .pause-menu{
@@ -488,7 +488,6 @@ padding-bottom: 9px;
 box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
 }
 .pause-menu h2{
-	text-shadow: 1px 1px white, -1px -1px #444;
 	font-family: 'SpicyRice';
 	color: #252150;
 	letter-spacing: 5px;

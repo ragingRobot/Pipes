@@ -544,7 +544,7 @@ var PipeGame = (function() {
 		$(".message-box").html(message);
 		$(".message-holder").fadeIn("fast", function() {
 
-			$(this).delay(2000).fadeOut("slow", function() {
+			$(this).delay(2500).fadeOut("slow", function() {
 				$(".message-box").removeClass("start");
 				if ( typeof callback != "undefined") {
 					callback();
