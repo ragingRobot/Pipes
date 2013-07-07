@@ -79,6 +79,11 @@
 	
 	
 	
+@keyframes start {
+   from { background-position:    -0px 3px; }
+     to { background-position: -142px 3px; }
+}
+	
 	@-webkit-keyframes start {
    from { background-position:    -0px 3px; }
      to { background-position: -142px 3px; }
@@ -99,13 +104,12 @@
      to { background-position: -142px 3px; }
 }
 
-@keyframes start {
-   from { background-position:    -0px 3px; }
-     to { background-position: -142px 3px; }
+	
+	
+	@keyframes end  {
+   from { background-position:    -0px -62px; }
+     to { background-position: -142px -62px; }
 }
-	
-	
-	
 	
 	
 	
@@ -129,11 +133,7 @@
      to { background-position: -142px -62px; }
 }
 
-@keyframes end  {
-   from { background-position:    -0px -62px; }
-     to { background-position: -142px -62px; }
-}
-	
+
 body{
 	-webkit-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
 	-moz-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
@@ -620,11 +620,12 @@ box-shadow: inset -2px 2px 6px #052756, 0px 1px 0px #60c9f0;
 	margin-left: -71px;
 	margin-bottom: -71px;
 	
+	animation: start .8s steps(2) infinite;
 	  -webkit-animation: start .8s steps(2) infinite;
        -moz-animation: start .8s steps(2) infinite;
         -ms-animation: start .8s steps(2) infinite;
          -o-animation: start .8s steps(2) infinite;
-            animation: start .8s steps(2) infinite;
+            
 }
 .plumbing:after{
 	width: 71px;
