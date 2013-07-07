@@ -75,7 +75,65 @@
 		
 		
 		
-		
+	
+	
+	
+	
+	@-webkit-keyframes start {
+   from { background-position:    -0px 3px; }
+     to { background-position: -142px 3px; }
+}
+
+@-moz-keyframes start  {
+    from { background-position:    -0px 3px; }
+     to { background-position: -142px 3px; }
+}
+
+@-ms-keyframes start  {
+    from { background-position:    -0px 3px; }
+     to { background-position: -142px 3px; }
+}
+
+@-o-keyframes start  {
+   from { background-position:    -0px 3px; }
+     to { background-position: -142px 3px; }
+}
+
+@keyframes start {
+   from { background-position:    -0px 3px; }
+     to { background-position: -142px 3px; }
+}
+	
+	
+	
+	
+	
+	
+	@-webkit-keyframes end {
+   from { background-position:    -0px -62px; }
+     to { background-position: -142px -62px; }
+}
+
+@-moz-keyframes end   {
+    from { background-position:    -0px -62px; }
+     to { background-position: -142px -62px; }
+}
+
+@-ms-keyframes end   {
+    from { background-position:    -0px -62px; }
+     to { background-position: -142px -62px; }
+}
+
+@-o-keyframes end   {
+   from { background-position:    -0px -62px; }
+     to { background-position: -142px -62px; }
+}
+
+@keyframes end  {
+   from { background-position:    -0px -62px; }
+     to { background-position: -142px -62px; }
+}
+	
 body{
 	-webkit-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
 	-moz-box-shadow: inset 0 0 49px 18px rgba(2,7,77,0.65);
@@ -310,6 +368,7 @@ body, html{
 	width:100%;
 	height:100%;
 	float:left;
+	overflow: hidden;
 } 
 .plumbing {
 	background: #e8e6e6;
@@ -551,3 +610,41 @@ box-shadow: inset 0 0 12px 2px rgba(0,0,0,0.43);
 -o-box-shadow: inset -2px 2px 6px #052756, 0px 1px 0px #60c9f0;
 box-shadow: inset -2px 2px 6px #052756, 0px 1px 0px #60c9f0;
 }
+
+.plumbing:before{
+	width: 71px;
+	height: 71px;
+	content: "";
+	background: URL(.././img/start.png) 0px 3px;
+	display: block;
+	margin-left: -71px;
+	margin-bottom: -71px;
+	
+	  -webkit-animation: start .8s steps(2) infinite;
+       -moz-animation: start .8s steps(2) infinite;
+        -ms-animation: start .8s steps(2) infinite;
+         -o-animation: start .8s steps(2) infinite;
+            animation: start .8s steps(2) infinite;
+}
+.plumbing:after{
+	width: 71px;
+	height: 71px;
+	content: "";
+	background: URL(.././img/start.png) 0px -62px;
+	display: block;
+	margin-right: -68px;
+	margin-top: -73px;
+	position: relative;
+	float: right;
+	
+	animation: end .8s steps(2) infinite;
+	-webkit-animation: end .8s steps(2) infinite;
+       -moz-animation: end .8s steps(2) infinite;
+        -ms-animation: end .8s steps(2) infinite;
+         -o-animation: end .8s steps(2) infinite;
+            
+}
+
+
+
+

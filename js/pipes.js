@@ -238,6 +238,9 @@ Pipe.prototype.clicked = function() {
 		if (!this.full) {
 			if (gameOptionsManager.selectedPipeValue != null && typeof gameOptionsManager.selectedPipeValue != 'undefined') {
 				this.setConnectionStatusList(gameOptionsManager.selectedPipeValue);
+				if(typeof window.SoundManager != "undefined"){
+					window.SoundManager.playTurn();
+				}
 			}
 		}
 	} else {
