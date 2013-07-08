@@ -609,7 +609,9 @@ var PipeGame = (function() {
 		$(".speedUp").click(function() {
 			_scoreMultiplier += 1;
 			gameOptionsManager.fillSpeed = 100;
-			PipeGame.startWater();
+			if(typeof _displayTimer != "undefined" && _displayTimer != null){
+				PipeGame.startWater();
+			}
 		});
 
 		//this is used by the level editor to select a tile
@@ -679,16 +681,16 @@ var PipeGame = (function() {
 		clearInterval(_startTimer);
 		if(typeof _displayTimer != "undefined" && _displayTimer != null){
 			_displayTimer.stop();
+			_displayTimer = null;
 		}
 		if(_firstToFill.full == 0){
 			_firstToFill.fill(3);
-			_startWater();
 			
 		}
 		
 		if(typeof window.SoundManager != "undefined"){
-			window.SoundManager.startWater();
 			window.SoundManager.vibrate();
+			window.SoundManager.startWater();
 		}
 	}
 
@@ -759,6 +761,7 @@ var PipeGame = (function() {
 	}
 
 })();
+
 
 //this checks for mobile devices
 window.mobilecheck = function() {
